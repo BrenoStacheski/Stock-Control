@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CookieService } from 'ngx-cookie-service';
+import { MessageService } from 'primeng/api';
 import { lastValueFrom } from 'rxjs';
 import { SignUpUserRequest } from 'src/app/models/interfaces/user/SignUpUserRequest';
 import { AuthRequest } from 'src/app/models/interfaces/user/auth/AuthRequest';
@@ -28,7 +29,8 @@ export class HomeComponent {
   constructor(
     private formBuilder: FormBuilder,
     private userService: UserService,
-    private cookieService: CookieService
+    private cookieService: CookieService,
+    private messageService: MessageService
   ) { }
 
   onSubmitLoginForm(): void {
@@ -39,12 +41,24 @@ export class HomeComponent {
           next: (response) => {
             if (response) {
               this.cookieService.set('USER_INFO', response?.token);
-
               this.loginForm.reset();
-
+              this.messageService.add({
+                severity: 'success',
+                summary: 'Sucesso',
+                detail: `Bem vindo de volta ${response.name}!`,
+                life: 2000,
+              });
             }
           },
-          error: (err) => console.log(err),
+          error: (err) => {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Erro',
+              detail: `Erro ao fazer login!`,
+              life: 2000,
+            });
+            console.log(err);
+          },
         })
     }
   }
@@ -52,16 +66,29 @@ export class HomeComponent {
   onSubmitSignupForm(): void {
     if (this.signupForm.value && this.signupForm.valid) {
       this.userService.signUpUser(this.signupForm.value as unknown as SignUpUserRequest)
-      .subscribe({
-        next: (response) => {
-          if (response) {
-            alert('Usuário teste criado com sucesso!');
-            this.signupForm.reset();
-            this.loginCard = true;
-          }
-        },
-      error: (err) => console.log(err),
-      })
+        .subscribe({
+          next: (response) => {
+            if (response) {
+              this.signupForm.reset();
+              this.loginCard = true;
+              this.messageService.add({
+                severity: 'success',
+                summary: 'Sucesso',
+                detail: 'Usuário criado com sucesso!',
+                life: 2000,
+              });
+            }
+          },
+          error: (err) => {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Erro',
+              detail: `Erro ao criar usuário!`,
+              life: 2000,
+            });
+            console.log(err);
+          },
+        })
     }
   }
 }
