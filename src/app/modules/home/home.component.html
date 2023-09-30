@@ -10,7 +10,7 @@
             <input type="email" formControlName="email" pInputText placeholder="E-mail" />
           </div>
           <div class="flex justify-content-center align-content-center text-align-center mt-3">
-            <input type="password" formControlName="senha" pInputText placeholder="Senha" />
+            <input type="password" formControlName="password" pInputText placeholder="Senha" />
           </div>
           <div class="card flex justify-content-center mt-3">
             <button type="submit" pButton pRipple label="Login" [disabled]="this.loginForm.invalid">
@@ -27,13 +27,13 @@
         <p-card *ngIf="!loginCard" styleClass="mt-10" header="Criar conta" subheader="Crie já sua conta gratuita">
 
           <div class="flex justify-content-center align-content-center text-align-center">
-            <input type="text" formControlName="nome" pInputText placeholder="Nome" />
+            <input type="text" formControlName="name" pInputText placeholder="Nome" />
           </div>
           <div class="flex justify-content-center align-content-center text-align-center mt-3">
             <input type="email" formControlName="email" pInputText placeholder="E-mail" />
           </div>
           <div class="flex justify-content-center align-content-center text-align-center mt-3">
-            <input type="password" formControlName="senha" pInputText placeholder="Senha" />
+            <input type="password" formControlName="password" pInputText placeholder="Senha" />
           </div>
           <div class="card flex justify-content-center mt-3">
             <button type="submit" pButton pRipple label="Criar conta" [disabled]="this.signupForm.invalid">
