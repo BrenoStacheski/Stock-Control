@@ -12,6 +12,7 @@ import { AppComponent } from './app.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HomeComponent } from './modules/home/home.component';
 import { CookieService } from 'ngx-cookie-service';
+import { MessageService } from 'primeng/api';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { CookieService } from 'ngx-cookie-service';
     ToastModule
   ],
   providers: [
-    CookieService
+    CookieService,
+    MessageService
   ],
   bootstrap: [AppComponent]
 })
