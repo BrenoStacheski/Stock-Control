@@ -25,11 +25,9 @@ export class HomeComponent {
   ) { }
 
   onSubmitLoginForm(): void {
-    console.log('DADOS DO FORMULÁRIO DE LOGIN', this.loginForm.value)
   }
 
   onSubmitSignupForm(): void {
     this.signupForm.reset();
-    console.log('DADOS DO FORMULÁRIO DE SIGNup', this.signupForm.value)
   }
 }
