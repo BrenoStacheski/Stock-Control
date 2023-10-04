@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { MessageService } from 'primeng/api';
 import { lastValueFrom } from 'rxjs';
@@ -30,11 +31,11 @@ export class HomeComponent {
     private formBuilder: FormBuilder,
     private userService: UserService,
     private cookieService: CookieService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private router: Router
   ) { }
 
   onSubmitLoginForm(): void {
-    console.log('entrou aqui', this.loginForm.value)
     if (this.loginForm.value && this.loginForm.valid) {
       this.userService.authUser(this.loginForm.value as unknown as AuthRequest)
         .subscribe({
@@ -42,6 +43,7 @@ export class HomeComponent {
             if (response) {
               this.cookieService.set('USER_INFO', response?.token);
               this.loginForm.reset();
+              this.router.navigate(['/dashboard']);
               this.messageService.add({
                 severity: 'success',
                 summary: 'Sucesso',
