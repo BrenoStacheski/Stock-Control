@@ -1,3 +1,5 @@
+import { ProductFormComponent } from './../../components/product-form/product-form.component';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { ProductsDataTransferService } from './../../../../shared/services/products/products-data-transfer.service';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
@@ -15,13 +17,15 @@ import { ProductsService } from 'src/app/services/products/products.service';
 export class ProductsHomeComponent implements OnInit, OnDestroy {
   private readonly destroy$: Subject<void> = new Subject();
   public productsList: Array<GetAllProductsResponse> = [];
+  private ref!: DynamicDialogRef;
 
   constructor(
     private productsService: ProductsService,
     private productsDataTransferService: ProductsDataTransferService,
     private router: Router,
     private messageService: MessageService,
-    private confirmationService: ConfirmationService
+    private confirmationService: ConfirmationService,
+    private dialogService: DialogService
   ) { }
 
   ngOnInit(): void {
@@ -61,7 +65,25 @@ export class ProductsHomeComponent implements OnInit, OnDestroy {
   }
 
   handleProductAction(event: EventAction): void {
-    console.log('event', event)
+    if (event) {
+      this.ref = this.dialogService.open(ProductFormComponent, {
+        header: event?.action,
+        width: '70%',
+        contentStyle: { overflow: 'auto' },
+        baseZIndex: 10000,
+        maximizable: true,
+        data: {
+          event: event,
+          productDatas: this.productsList
+        },
+      });
+      this.ref.onClose.pipe(
+        takeUntil(this.destroy$)
+      )
+        .subscribe({
+          next: () => this.getAPIProductsData(),
+        })
+    }
   }
 
   handleDeleteProductAction(event: { productId: string, productName: string }): void {
