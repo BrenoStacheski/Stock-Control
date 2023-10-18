@@ -74,7 +74,7 @@ export class ProductsHomeComponent implements OnInit, OnDestroy {
         maximizable: true,
         data: {
           event: event,
-          productDatas: this.productsList
+          productData: this.productsList
         },
       });
       this.ref.onClose.pipe(
