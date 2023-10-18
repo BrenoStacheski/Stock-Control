@@ -1,10 +1,14 @@
+import { ProductsDataTransferService } from './../../../../shared/services/products/products-data-transfer.service';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
+import { DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { Subject, takeUntil } from 'rxjs';
 import { GetCategoriesResponse } from 'src/app/models/interfaces/categories/responses/GetCategoriesResponse';
+import { EventAction } from 'src/app/models/interfaces/products/event/EventAction';
 import { CreateProductRequest } from 'src/app/models/interfaces/products/request/CreateProductRequest';
+import { GetAllProductsResponse } from 'src/app/models/interfaces/products/response/GetAllProductsResponse';
 import { CategoriesService } from 'src/app/services/categories/categories.service';
 import { ProductsService } from 'src/app/services/products/products.service';
 
@@ -17,7 +21,12 @@ export class ProductFormComponent implements OnInit, OnDestroy {
   private readonly destroy$: Subject<void> = new Subject();
   public categoryData: Array<GetCategoriesResponse> = [];
   public selectedCategory: Array<{ name: string, code: string }> = [];
-
+  public productAction!: {
+    event: EventAction;
+    productData: Array<GetAllProductsResponse>;
+  }
+  public productSelectedData!: GetAllProductsResponse;
+  public productData: Array<GetAllProductsResponse> = [];
 
   public addProductForm = this.formBuilder.group({
     name: ['', Validators.required],
@@ -27,15 +36,25 @@ export class ProductFormComponent implements OnInit, OnDestroy {
     amount: [0, Validators.required]
   })
 
+  public editProductForm = this.formBuilder.group({
+    name: ['', Validators.required],
+    price: ['', Validators.required],
+    description: ['', Validators.required],
+    amount: [0, Validators.required]
+  })
+
   constructor(
     private categoriesService: CategoriesService,
     private formBuilder: FormBuilder,
     private messageService: MessageService,
     private router: Router,
-    private productsService: ProductsService
+    private productsService: ProductsService,
+    private productsDataTransferService: ProductsDataTransferService,
+    private ref: DynamicDialogConfig
   ) { }
 
   ngOnInit(): void {
+    this.productAction = this.ref.data;
     this.getAllCategories();
   }
 
@@ -74,6 +93,43 @@ export class ProductFormComponent implements OnInit, OnDestroy {
     }
 
     this.addProductForm.reset();
+  }
+
+  handleSubmitEditProduct(): void {
+    if (this.editProductForm.value && this.editProductForm.valid) {
+
+    }
+  }
+
+  getProductSelectedData(productId: string): void {
+    const allProducts = this.productAction?.productData;
+    if (allProducts.length > 0) {
+      const filteredProduct = allProducts.filter((element) => element?.id === productId);
+
+      if (filteredProduct) {
+        this.productSelectedData = filteredProduct[0];
+
+        this.editProductForm.setValue({
+          name: this.productSelectedData?.name,
+          price: this.productSelectedData?.price,
+          amount: this.productSelectedData?.amount,
+          description: this.productSelectedData?.description
+        })
+      }
+    }
+  }
+
+  getProductData(): void {
+    this.productsService.getAllProducts().pipe(
+      takeUntil(this.destroy$)
+    ).subscribe({
+      next: (response) => {
+        if (response.length > 0) {
+          this.productData = response;
+          this.productData && this.productsDataTransferService.setProductsData(this.productData);
+        }
+      }
+    })
   }
 
   getAllCategories(): void {
