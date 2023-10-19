@@ -19,12 +19,14 @@ import { TableModule } from 'primeng/table';
 import { ConfirmationService } from 'primeng/api';
 
 import { CategoriesHomeComponent } from './page/categories-home/categories-home.component';
+import { CategoriesTableComponent } from './components/categories-table/categories-table.component';
 import { CATEGORIES_ROUTES } from './categories.routing';
 import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
   declarations: [
-    CategoriesHomeComponent
+    CategoriesHomeComponent,
+    CategoriesTableComponent
   ],
   imports: [
     CommonModule,
@@ -45,11 +47,11 @@ import { SharedModule } from 'src/app/shared/shared.module';
     DynamicDialogModule,
     DropdownModule,
     ConfirmDialogModule,
-    TooltipModule
+    TooltipModule,
   ],
   providers: [
     DialogService,
-    ConfirmationService
+    ConfirmationService,
   ]
 })
 export class CategoriesModule { }
