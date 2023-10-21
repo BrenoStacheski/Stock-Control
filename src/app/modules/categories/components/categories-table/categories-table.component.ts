@@ -15,12 +15,23 @@ export class CategoriesTableComponent {
   @Output() public deleteCategoryEvent = new EventEmitter<DeleteCategoryAction>();
 
   public selectedCategory!: GetCategoriesResponse;
-  public addCategoryAction!: CategoryEvent.ADD_CATEGORY_ACTION;
-  public editCategoryAction!: CategoryEvent.EDIT_CATEGORY_ACTION;
+  public addCategoryAction = CategoryEvent.ADD_CATEGORY_ACTION;
+  public editCategoryAction = CategoryEvent.EDIT_CATEGORY_ACTION;
+
+  constructor() {
+
+  }
 
   handleDeleteCategoryEvent(category_id: string, categoryName: string): void {
     if (category_id !== '' && categoryName !== '') {
-      this.deleteCategoryEvent.emit({category_id, categoryName});
+      this.deleteCategoryEvent.emit({ category_id, categoryName });
+    }
+  }
+
+  handleCategoryEvent(action: string, id?: string, categoryName?: string): void {
+    console.log('entrou aqui', action)
+    if (action && action !== '') {
+      this.categoryEvent.emit({ action, id, categoryName });
     }
   }
 }
