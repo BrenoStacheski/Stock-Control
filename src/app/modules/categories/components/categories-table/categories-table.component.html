@@ -22,7 +22,7 @@
             </th>
             <th>
               <div class="flex justify-content-center">
-                <p-button (onClick)="handleCategoryEvent(addCategoryAction)" styleClass="p-button-info" icon="pi pi-plus" label="Adicionar"></p-button>
+                <p-button (onClick)="handleCategoryEvent(addCategoryAction)" pTooltip="Adicionar categoria" tooltipPosition="top" styleClass="p-button-info" icon="pi pi-plus" label="Adicionar"></p-button>
               </div>
             </th>
           </tr>
@@ -33,9 +33,9 @@
             <td>{{ category?.name }}</td>
             <td>
               <div class="flex justify-content-center gap-3 align-content-center align-items-center">
-                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-warning">
+                <button (click)="handleCategoryEvent(editCategoryAction, category?.id, category?.name)" pButton pRipple pTooltip="Editar categoria" tooltipPosition="top" icon="pi pi-pencil" class="p-button-rounded p-button-warning">
                 </button>
-                <button (click)="handleDeleteCategoryEvent(category?.id, category?.name)" pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger">
+                <button (click)="handleDeleteCategoryEvent(category?.id, category?.name)" pButton pRipple pTooltip="Remover categoria" tooltipPosition="top" icon="pi pi-trash" class="p-button-rounded p-button-danger">
                 </button>
               </div>
             </td>
