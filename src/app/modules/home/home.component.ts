@@ -13,9 +13,7 @@ import { UserService } from 'src/app/services/user/user.service';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnDestroy, AfterViewInit {
-  @ViewChild('emailInput') public emailInputRef!: ElementRef;
-  @ViewChild('passwordInput') public passwordInputRef!: ElementRef;
+export class HomeComponent implements OnDestroy {
   private destroy$ = new Subject<void>();
   loginCard = true;
 
@@ -37,10 +35,6 @@ export class HomeComponent implements OnDestroy, AfterViewInit {
     private messageService: MessageService,
     private router: Router
   ) { }
-
-  ngAfterViewInit(): void {
-
-  }
 
   onSubmitLoginForm(): void {
     if (this.loginForm.value && this.loginForm.valid) {
