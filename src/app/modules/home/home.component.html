@@ -7,10 +7,10 @@
         <p-card *ngIf="loginCard" styleClass="mt-10" header="Login" subheader="Faça login com sua conta existente!">
 
           <div class="flex justify-content-center align-content-center text-align-center">
-            <input #emailInput type="email" formControlName="email" pInputText placeholder="E-mail" />
+            <input type="email" formControlName="email" pInputText placeholder="E-mail" />
           </div>
           <div class="flex justify-content-center align-content-center text-align-center mt-3">
-            <input #passwordInput type="password" formControlName="password" pInputText placeholder="Senha" />
+            <input type="password" formControlName="password" pInputText placeholder="Senha" />
           </div>
           <div class="card flex justify-content-center mt-3">
             <button type="submit" pButton pRipple label="Login" [disabled]="this.loginForm.invalid">
